@@ -43,10 +43,10 @@ in some template add a button with click event
 in helper function  
 
 &nbsp;&nbsp;'click .saml-login': function(event, template){  
-&nbsp;&nbsp;&nbsp;&nbsp;var provider = "some-provider"  
-&nbsp;&nbsp;&nbsp;&nbsp;Meteor.loginWithSaml({  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;provider:provider  
-&nbsp;&nbsp;}, function(error, result){  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//handle errors and result  
-&nbsp;&nbsp;});  
-}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var provider = "some-provider";  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Meteor.loginWithSaml({  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;provider:provider  
+&nbsp;&nbsp;&nbsp;&nbsp;}, function(error, result){  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//handle errors and result  
+&nbsp;&nbsp;&nbsp;&nbsp;});  
+&nbsp;&nbsp;}
