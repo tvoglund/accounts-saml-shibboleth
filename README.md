@@ -20,15 +20,15 @@ put saml settings in meteor.settings like so:
 &nbsp;&nbsp;&nbsp;&nbsp;"debug": "true"  
 &nbsp;&nbsp;},  
 &nbsp;&nbsp;"saml":[  
-&nbsp;&nbsp;{  
-&nbsp;&nbsp;&nbsp;&nbsp;"provider":"some-provider",  
-&nbsp;&nbsp;&nbsp;&nbsp;"createUser": false,  
-&nbsp;&nbsp;&nbsp;&nbsp;"profile": {  
-&nbsp;&nbsp;&nbsp;&nbsp;"firstName": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",  
-&nbsp;&nbsp;&nbsp;&nbsp;"lastName" : "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"  
-&nbsp;&nbsp;},  
-&nbsp;&nbsp;"pem": "<add PEM Here>"  
-&nbsp;&nbsp;}  
+&nbsp;&nbsp;&nbsp;&nbsp;{  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"provider":"some-provider",  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"createUser": false,  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"profile": {  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"firstName": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"lastName" : "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"  
+&nbsp;&nbsp;&nbsp;&nbsp;},  
+&nbsp;&nbsp;&nbsp;&nbsp;"pem": "<add PEM Here>"  
+&nbsp;&nbsp;&nbsp;&nbsp;}  
 &nbsp;&nbsp;]  
 }  
 
