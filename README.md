@@ -15,11 +15,11 @@ Usage
 put saml settings in meteor.settings like so:  
 
 {  
-&nbsp;&nbsp;"public":
+&nbsp;&nbsp;"public":  
 &nbsp;&nbsp;{  
 &nbsp;&nbsp;&nbsp;&nbsp;"debug": "true"  
 &nbsp;&nbsp;},  
-&nbsp;&nbsp;"saml":[
+&nbsp;&nbsp;"saml":[  
 &nbsp;&nbsp;{  
 &nbsp;&nbsp;&nbsp;&nbsp;"provider":"some-provider",  
 &nbsp;&nbsp;&nbsp;&nbsp;"createUser": false,  
@@ -28,7 +28,8 @@ put saml settings in meteor.settings like so:
 &nbsp;&nbsp;&nbsp;&nbsp;"lastName" : "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"  
 &nbsp;&nbsp;},  
 &nbsp;&nbsp;"pem": "<add PEM Here>"  
-&nbsp;&nbsp;}]  
+&nbsp;&nbsp;}  
+&nbsp;&nbsp;]  
 }  
 
 **debug = true will creaete a table that has log errors in it.  
