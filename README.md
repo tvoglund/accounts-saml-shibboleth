@@ -38,17 +38,15 @@ put saml settings in meteor.settings like so:
 **debug = true will creaete a table that has log errors in it.  
 
 
-in some template
+in some template add a button with click event
 
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="saml-login" data-provider="openidp">OpenIDP</a>  
-in helper function
+in helper function  
 
-&nbsp;&nbsp;'click .saml-login': function(event, template){
-&nbsp;&nbsp;&nbsp;&nbsp;event.preventDefault();
-&nbsp;&nbsp;&nbsp;&nbsp;var provider = $(event.target).data('provider');
-&nbsp;&nbsp;&nbsp;&nbsp;Meteor.loginWithSaml({
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;provider:provider
-&nbsp;&nbsp;}, function(error, result){
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//handle errors and result
-&nbsp;&nbsp;});
+&nbsp;&nbsp;'click .saml-login': function(event, template){  
+&nbsp;&nbsp;&nbsp;&nbsp;var provider = "some-provider"  
+&nbsp;&nbsp;&nbsp;&nbsp;Meteor.loginWithSaml({  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;provider:provider  
+&nbsp;&nbsp;}, function(error, result){  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//handle errors and result  
+&nbsp;&nbsp;});  
 }
