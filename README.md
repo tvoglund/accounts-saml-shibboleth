@@ -36,3 +36,19 @@ put saml settings in meteor.settings like so:
 }  
 
 **debug = true will creaete a table that has log errors in it.  
+
+
+in some template
+
+<a href="#" class="saml-login" data-provider="openidp">OpenIDP</a>
+in helper function
+
+'click .saml-login': function(event, template){
+  event.preventDefault();
+  var provider = $(event.target).data('provider');
+  Meteor.loginWithSaml({
+      provider:provider
+  }, function(error, result){
+      //handle errors and result
+  });
+}
