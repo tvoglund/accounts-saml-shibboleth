@@ -40,15 +40,15 @@ put saml settings in meteor.settings like so:
 
 in some template
 
-<a href="#" class="saml-login" data-provider="openidp">OpenIDP</a>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" class="saml-login" data-provider="openidp">OpenIDP</a>  
 in helper function
 
-'click .saml-login': function(event, template){
-  event.preventDefault();
-  var provider = $(event.target).data('provider');
-  Meteor.loginWithSaml({
-      provider:provider
-  }, function(error, result){
-      //handle errors and result
-  });
+&nbsp;&nbsp;'click .saml-login': function(event, template){
+&nbsp;&nbsp;&nbsp;&nbsp;event.preventDefault();
+&nbsp;&nbsp;&nbsp;&nbsp;var provider = $(event.target).data('provider');
+&nbsp;&nbsp;&nbsp;&nbsp;Meteor.loginWithSaml({
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;provider:provider
+&nbsp;&nbsp;}, function(error, result){
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//handle errors and result
+&nbsp;&nbsp;});
 }
