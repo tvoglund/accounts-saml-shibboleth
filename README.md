@@ -29,7 +29,7 @@ put saml settings in meteor.settings like so:
 &nbsp;&nbsp;&nbsp;&nbsp;},  
 &nbsp;&nbsp;&nbsp;&nbsp;"pem": "-----BEGIN RSA PRIVATE KEY----- ...... ==-----END RSA PRIVATE KEY-----""  
 &nbsp;&nbsp;&nbsp;&nbsp;"entryPoint":"https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO",  
-&nbsp;&nbsp;&nbsp;&nbsp;"issuer": "https://sso.tuapath.com/shibboleth-sp",  
+&nbsp;&nbsp;&nbsp;&nbsp;"issuer": "https://some.website.com/shibboleth-sp",
 &nbsp;&nbsp;&nbsp;&nbsp;"cert":"remove -----BEGIN CERTIFICATE----- at the begging and -----END CERTIFICATE----- at the end  
 &nbsp;&nbsp;&nbsp;&nbsp;}  
 &nbsp;&nbsp;]  
