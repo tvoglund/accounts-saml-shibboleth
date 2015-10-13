@@ -1,16 +1,13 @@
-accounts-saml-shibboleth
-=======
+## accounts-saml-shibboleth
 
 SAML v2 login support for existing password based accounts using Shibboleth IdP
 
-Important Notes
------------
+### Important Notes
 
 This package is working with testShib.org IdP, but has not been tested with any other IdPs  
 This package is expecting an encrypted assertion  
 
-Usage
------------
+### Usage
 
 put saml settings in meteor.settings like so:  
 
