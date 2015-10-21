@@ -11,33 +11,28 @@ This package is expecting an encrypted assertion
 
 put saml settings in meteor.settings like so:  
 
-{  
-"public":
 {
-"debug": true
-},
-"saml":[
-{
-"provider":"some-provider",
-"createUser": false,
-"profile": {
-"firstName": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
-"lastName" : "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"
-},
-"pem": "-----BEGIN RSA PRIVATE KEY----- ...... ==-----END RSA PRIVATE KEY-----""
-"entryPoint":"https://idp.testshib.org/idp/profile/SAML2/Redirect/SSO",
-"issuer": "https://some.website.com/shibboleth-sp",
-"cert":"remove -----BEGIN CERTIFICATE----- at the begging and -----END CERTIFICATE----- at the end
+  "public": {
+    "debug": true,
+  },
+  "saml":[{
+    "provider":"shibboleth-idp",
+    "createUser": false,
+    "profile": {
+      "firstName": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+      "lastName" : "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"
+    },
+    "pem": "-----BEGIN RSA PRIVATE KEY-----SomeKeyHere-----END RSA PRIVATE KEY-----",
+    "entryPoint":"https://shibboleth.uwyo.edu/idp/profile/SAML2/Redirect/SSO",
+    "issuer": "https://www.yourdomain.com/shibboleth-sp",
+    "cert":"remove -----BEGIN CERTIFICATE----- at the beginning and -----END CERTIFICATE----- at the end"
+ }]
 }
-]
-}  
 
-**debug = true will creaete a table that has log errors in it.  
+Note:  debug = true will creaete a table that has log errors in it.
 
 
-in some template add a button with click event
-
-in helper function  
+Then in some template add a button with click event that will call:
 
 'click .saml-login': function(event, template){
 var provider = "some-provider";
