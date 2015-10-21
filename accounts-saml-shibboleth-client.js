@@ -31,7 +31,6 @@ Accounts.saml.initiateLogin = function(options, callback, dimensions) {
   }, 100);
 };
 
-
 var openCenteredPopup = function(url, width, height) {
   var screenX = typeof window.screenX !== 'undefined'
         ? window.screenX : window.screenLeft;

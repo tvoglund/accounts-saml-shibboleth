@@ -4,7 +4,7 @@ MyLogs = new Meteor.Collection("samlLogs");
 // code to run on server at startup
 if(Meteor.settings) {
     if(Meteor.settings['public']) {
-        bDebug = Meteor.settings.public.debug == "true";
+        bDebug = Meteor.settings.public.debug == true;
     }
 }
 
