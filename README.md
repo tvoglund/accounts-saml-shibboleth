@@ -15,9 +15,9 @@ put saml settings in meteor.settings like so:
   "public": {
     "debug": true,
   },
+  "bUseTestShib": true,
   "saml":[{
     "provider":"shibboleth-idp",
-    "createUser": false,
     "profile": {
       "firstName": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
       "lastName" : "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"

@@ -269,14 +269,19 @@ SAML.prototype.validateResponse = function (samlResponse, callback) {
             }
 
             //truby added to handle TestShib.org
-            if(!profile.email && profile.uid){
+            var isTestShib = false;
+            if(Meteor.settings['bUseTestShib']) {
+                isTestShib  = Meteor.settings['bUseTestShib'] == true;
+                Accounts.saml.debugLog('saml_utils.js', '274', 'isTestShib = ' + isTestShib, false);
+            }
+            if(!profile.email && profile.uid && isTestShib){
                 profile['email'] = profile.uid + '@test.com';
             }
 
             callback(null, profile, false);
         } else {
             var logoutResponse = self.getElement(xmlDomDoc, 'LogoutResponse');
-            Accounts.saml.debugLog('saml_utils.js', '279', 'Unknown SAML response message', true);
+            Accounts.saml.debugLog('saml_utils.js', '284', 'Unknown SAML response message', true);
 
             if (logoutResponse) {
                 callback(null, null, true);
@@ -287,7 +292,7 @@ SAML.prototype.validateResponse = function (samlResponse, callback) {
         }
     }
     catch(error){
-        Accounts.saml.debugLog('saml_utils.js', '290', 'Unknown SAML response message.. Error: ' + error, true);
+        Accounts.saml.debugLog('saml_utils.js', '295', 'Unknown SAML response message.. Error: ' + error, true);
 
         return callback(new Error('Unknown SAML response message'), null, false);
     }
@@ -311,12 +316,12 @@ SAML.prototype.decryptSAMLResponse = function (samlResponse){
            return null;
        }
         else {
-           Accounts.saml.debugLog('saml_utils.js', '314', 'decryptSAMLResponse: ' + resultObj.result, false);
+           Accounts.saml.debugLog('saml_utils.js', '319', 'decryptSAMLResponse: ' + resultObj.result, false);
            return resultObj.result;
        }
     }
     catch(error){
-        Accounts.saml.debugLog('saml_utils.js', '320', 'error: ' + error, true);
+        Accounts.saml.debugLog('saml_utils.js', '324', 'error: ' + error, true);
         return null;
     }
 }

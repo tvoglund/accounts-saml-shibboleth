@@ -1,7 +1,7 @@
 Package.describe({
     name:"tvoglund:accounts-saml-shibboleth",
     summary: "saml login provider for meteor developed for Shibboleth with encrypted Assertion",
-    version: "0.0.7",
+    version: "0.0.8",
     git: "https://github.com/tvoglund/accounts-saml-shibboleth",
     documentation: 'README.md'
 });
