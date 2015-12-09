@@ -22,6 +22,10 @@ put saml settings in meteor.settings like so:
       "firstName": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
       "lastName" : "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"
     },
+    "authFields":{
+      "fname": "uid",
+      "dbField": "username"
+    },
     "pem": "-----BEGIN RSA PRIVATE KEY-----SomeKeyHere-----END RSA PRIVATE KEY-----",
     "entryPoint":"https://shibboleth.uwyo.edu/idp/profile/SAML2/Redirect/SSO",
     "issuer": "https://www.yourdomain.com/shibboleth-sp",
@@ -29,7 +33,7 @@ put saml settings in meteor.settings like so:
  }]
 }
 
-Note:  debug = true will creaete a table that has log errors in it.
+Note:  debug = true will create a table that has log errors in it.  The authFields fname is the friendlyName of attribute in saml assertion and dbField only can be username or UWID right now.  AuthFields is optional, you can remove authFields and it will default to emails.address as the dbField and the email in the assertion for the login process.
 
 
 Then in some template add a button with click event that will call:

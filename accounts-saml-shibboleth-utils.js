@@ -275,7 +275,7 @@ SAML.prototype.validateResponse = function (samlResponse, callback) {
                 Accounts.saml.debugLog('saml_utils.js', '274', 'isTestShib = ' + isTestShib, false);
             }
             if(!profile.email && profile.uid && isTestShib){
-                profile['email'] = profile.uid + '@test.com';
+                profile['email'] = profile.uid + '@testshib.org';
             }
 
             callback(null, profile, false);

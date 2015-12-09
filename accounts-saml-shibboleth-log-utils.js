@@ -19,6 +19,7 @@ Accounts.saml.debugLog = function(file,line,message,isError ){
 
     if(bDebug) {
         if(isError) {
+
             MyLogs.insert({
                 file: file,
                 line: line,
@@ -28,6 +29,7 @@ Accounts.saml.debugLog = function(file,line,message,isError ){
             });
         }
         else{
+
             MyLogs.insert({
                 file: file,
                 line: line,
