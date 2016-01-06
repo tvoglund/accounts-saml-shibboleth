@@ -28,25 +28,22 @@ Accounts.registerLoginHandler(function(loginRequest) {
             }
         }
     }
+    Accounts.saml.debugLog('saml_server.js', '31', 'fname: ' + fname + ', dbField: ' + dbField, true);
 
-    switch(dbField){
-        case 'username':
-            Accounts.saml.debugLog('saml_server.js', '34', 'Using dbField: username, and fname (profile.fname): ' + fname+ ', profile[fname]: ' + loginResult.profile[fname], true);
-            user = Meteor.users.findOne({'username':loginResult.profile[fname]});
-            break;
-        case 'UWID':
-            Accounts.saml.debugLog('saml_server.js', '38', 'Using dbField: username, and fname (profile.fname): ' + fname + ', profile[fname]: ' + loginResult.profile[fname], true);
-            user = Meteor.users.findOne({'profile.studentID':loginResult.profile[fname]});
-            break;
-        default:
-            Accounts.saml.debugLog('saml_server.js', '42', 'Using dbField: emails.address, and fname: email, loginResult.profile.email: ' + loginResult.profile.email, true);
-            user = Meteor.users.findOne({'emails.address':loginResult.profile.email});
-            break;
-    }
+    var query = {};
+    query[dbField] = profile[fname];
+    user = Meteor.users.findOne(query);
 
     if(!user) {
-        Accounts.saml.debugLog('saml_server.js', '48', 'Could not find an existing user with supplied email', true);
-        throw new Error("Could not find an existing user with supplied email " + loginResult.profile.email);
+        Accounts.saml.debugLog('saml_server.js', '38', 'User not found from authFields attribute in settings.json.  Using emails.address with value: ' + loginResult.profile.email + ', to find user.', true);
+        user = Meteor.users.findOne({'emails.address':loginResult.profile.email});
+        if(!user) {
+            Accounts.saml.debugLog('saml_server.js', '41', 'Could not find an existing user with credentials', true);
+            throw new Error("Could not find an existing user with supplied email " + loginResult.profile.email);
+        }
+    }
+    else{
+        Accounts.saml.debugLog('saml_server.js', '46', 'User was found using query Meteor.user.findOne({ ' + dbField + ' : ' +  profile[fname] + ' })', true);
     }
 
     var stampedToken = Accounts._generateStampedLoginToken();
@@ -56,7 +53,7 @@ Accounts.registerLoginHandler(function(loginRequest) {
       {$push: {'services.resume.loginTokens': hashStampedToken}}
     );
 
-    Accounts.saml.debugLog('saml_server.js', '59', 'registerLoginHandler user._id, stampedToken: ' + user._id +',' + stampedToken.token, false);
+    Accounts.saml.debugLog('saml_server.js', '56', 'registerLoginHandler user._id, stampedToken: ' + user._id +',' + stampedToken.token, false);
 
     //sending token along with the userId
     return {
@@ -65,7 +62,7 @@ Accounts.registerLoginHandler(function(loginRequest) {
     };
 
   }else{
-    Accounts.saml.debugLog('saml_server.js', '68', 'Throw SAML Profile did not contain an email address', true);
+    Accounts.saml.debugLog('saml_server.js', '65', 'Throw SAML Profile did not contain an email address', true);
     throw new Error("SAML Profile did not contain an email address");
   }
 });
@@ -119,7 +116,7 @@ middleware = function (req, res, next) {
     }
 
     if(!samlObject.actionName) {
-        Accounts.saml.debugLog('saml_server.js', '122', 'Throw Missing SAML action', true);
+        Accounts.saml.debugLog('saml_server.js', '119', 'Throw Missing SAML action', true);
         throw new Error("Missing SAML action");
     }
 
@@ -129,7 +126,7 @@ middleware = function (req, res, next) {
 
     // Skip everything if there's no service set by the saml middleware
     if (!service) {
-        Accounts.saml.debugLog('saml_server.js', '132', "Throw Unexpected SAML service " + samlObject.serviceName, true);
+        Accounts.saml.debugLog('saml_server.js', '129', "Throw Unexpected SAML service " + samlObject.serviceName, true);
         throw new Error("Unexpected SAML service " + samlObject.serviceName);
     }
 
@@ -140,7 +137,7 @@ middleware = function (req, res, next) {
       _saml = new SAML(service);
       _saml.getAuthorizeUrl(req, function (err, url) {
         if(err) {
-            Accounts.saml.debugLog('saml_server.js', '143', "Throw Unable to generate authorize url", true);
+            Accounts.saml.debugLog('saml_server.js', '140', "Throw Unable to generate authorize url", true);
             throw new Error("Unable to generate authorize url");
         }
         res.writeHead(302, {'Location': url});
@@ -152,13 +149,13 @@ middleware = function (req, res, next) {
         var decryptedResponse = _saml.decryptSAMLResponse(req.body.SAMLResponse);
         _saml.validateResponse(decryptedResponse, function (err, profile, loggedOut) {
             if (err) {
-                Accounts.saml.debugLog('saml_server.js', '155', "Throw Unable to validate response url", true);
+                Accounts.saml.debugLog('saml_server.js', '152', "Throw Unable to validate response url", true);
                 throw new Error("Unable to validate response url");
             }
 
             var credentialToken = profile.inResponseToId || profile.InResponseTo || samlObject.credentialToken;
             if (!credentialToken) {
-                Accounts.saml.debugLog('saml_server.js', '161', "Throw Unable to determine credentialToken", true);
+                Accounts.saml.debugLog('saml_server.js', '158', "Throw Unable to determine credentialToken", true);
                 throw new Error("Unable to determine credentialToken");
             }
 
@@ -167,12 +164,12 @@ middleware = function (req, res, next) {
                 profile: profile
             };
 
-            Accounts.saml.debugLog('saml_server.js', '170', 'closePopup being called.  CredentialToken: ' + credentialToken, false);
+            Accounts.saml.debugLog('saml_server.js', '167', 'closePopup being called.  CredentialToken: ' + credentialToken, false);
 
             closePopup(res);
         });
     }else {
-      Accounts.saml.debugLog('saml_server.js', '175',"Throw Unexpected SAML action " + samlObject.actionName, true);
+      Accounts.saml.debugLog('saml_server.js', '172',"Throw Unexpected SAML action " + samlObject.actionName, true);
       throw new Error("Unexpected SAML action " + samlObject.actionName);
     }
   } catch (err) {
@@ -181,7 +178,7 @@ middleware = function (req, res, next) {
 };
 
 var samlUrlToObject = function (url) {
-    Accounts.saml.debugLog('saml_server.js', '184',"samlUtrlToObject: " + url, false);
+    Accounts.saml.debugLog('saml_server.js', '181',"samlUtrlToObject: " + url, false);
   // req.url will be "/_saml/<action>/<service name>/<credentialToken>"
   if(!url)
     return null;
@@ -205,7 +202,7 @@ var closePopup = function(res, err) {
 
     var content = '<html><head><script>window.close()</script></head></html>';
     if(err) {
-        Accounts.saml.debugLog('saml_server.js', '208',"Throw error: " + err.reason, true);
+        Accounts.saml.debugLog('saml_server.js', '205',"Throw error: " + err.reason, true);
         content = '<html><body><h2>Sorry, an error occured</h2><div>' + err + '</div><a onclick="window.close();">Close Window</a></body></html>';
     }
 
