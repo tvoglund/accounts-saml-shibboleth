@@ -24,18 +24,19 @@ Accounts.registerLoginHandler(function(loginRequest) {
             if(Meteor.settings.saml[0]['authFields']) {
                 fname = Meteor.settings.saml[0].authFields['fname'];
                 dbField = Meteor.settings.saml[0].authFields['dbField'];
-                Accounts.saml.debugLog('saml_server.js', '27', 'Using fname and dbField from settings.json', true);
+                Accounts.saml.debugLog('saml_server.js', '27', 'Using fname and dbField from settings.json', false);
             }
         }
     }
-    Accounts.saml.debugLog('saml_server.js', '31', 'fname: ' + fname + ', dbField: ' + dbField, true);
+    Accounts.saml.debugLog('saml_server.js', '31', 'fname: ' + fname + ', dbField: ' + dbField + ', First Query is Meteor.user.findOne({ ' + dbField + ' : ' +  profile[fname] + ' })', false);
 
     var query = {};
-    query[dbField] = profile[fname];
-    user = Meteor.users.findOne(query);
+    query[dbField] = new RegExp(profile[fname], 'i');
+    user = Meteor.users.findOne(query);  //This is case sensitive.
 
     if(!user) {
-        Accounts.saml.debugLog('saml_server.js', '38', 'User not found from authFields attribute in settings.json.  Using emails.address with value: ' + loginResult.profile.email + ', to find user.', true);
+        Accounts.saml.debugLog('saml_server.js', '38', 'User not found from authFields attribute in settings.json.  Using emails.address with value: ' + loginResult.profile.email + ', to find user.', false);
+        Accounts.saml.debugLog('Second Query is Meteor.user.findOne({ emails.address : ' + loginResult.profile.email + ' })', false);
         user = Meteor.users.findOne({'emails.address':loginResult.profile.email});
         if(!user) {
             Accounts.saml.debugLog('saml_server.js', '41', 'Could not find an existing user with credentials', true);
@@ -43,7 +44,7 @@ Accounts.registerLoginHandler(function(loginRequest) {
         }
     }
     else{
-        Accounts.saml.debugLog('saml_server.js', '46', 'User was found using query Meteor.user.findOne({ ' + dbField + ' : ' +  profile[fname] + ' })', true);
+        Accounts.saml.debugLog('saml_server.js', '46', 'User was found using query Meteor.user.findOne({ ' + dbField + ' : ' +  profile[fname] + ' })', false);
     }
 
     var stampedToken = Accounts._generateStampedLoginToken();
