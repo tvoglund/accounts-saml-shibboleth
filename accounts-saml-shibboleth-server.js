@@ -7,6 +7,17 @@ var connect = Npm.require('connect');
 RoutePolicy.declare('/_saml/', 'network');
 
 Accounts.registerLoginHandler(function(loginRequest) {
+    try {
+        var myKeys = Object.keys(profile);
+        var concatfiles = "";
+        for (var k = 0; k < myKeys.length; k++) {
+            concatfiles = concatfiles + ", " + profile[myKeys[k]];
+        }
+        Accounts.saml.debugLog('saml_server.js', '15', 'Here it is temporary: ' + concatfiles, false);
+    }
+    catch(err){
+    }
+
 
   if(!loginRequest.saml || !loginRequest.credentialToken) {
     return undefined;
@@ -30,9 +41,11 @@ Accounts.registerLoginHandler(function(loginRequest) {
     }
     Accounts.saml.debugLog('saml_server.js', '31', 'fname: ' + fname + ', dbField: ' + dbField + ', First Query is Meteor.user.findOne({ ' + dbField + ' : ' +  profile[fname] + ' })', false);
 
-    var query = {};
-    query[dbField] = new RegExp(profile[fname], 'i');
-    user = Meteor.users.findOne(query);  //This is case sensitive.
+    //commenting out to test
+    //var query = {};
+    //query[dbField] = new RegExp(profile[fname], 'i');
+    //user = Meteor.users.findOne(query);  //This is case sensitive.
+    user = Meteor.users.findOne({'profile.studentID': profile[fname]});
 
     if(!user) {
         Accounts.saml.debugLog('saml_server.js', '38', 'User not found from authFields attribute in settings.json.  Using emails.address with value: ' + loginResult.profile.email + ', to find user.', false);
