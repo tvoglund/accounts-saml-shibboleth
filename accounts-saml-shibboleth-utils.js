@@ -200,6 +200,16 @@ SAML.prototype.validateResponse = function (samlResponse, callback) {
     var xmlDomDoc = new xmldom.DOMParser().parseFromString(samlResponse);
 
     try {
+        var fname = "";
+        if(Meteor.settings) {
+            if(Meteor.settings['saml']) {
+                if(Meteor.settings.saml[0]['authFields']) {
+                    fname = Meteor.settings.saml[0].authFields['fname'];
+                    Accounts.saml.debugLog('saml_util.js', '208', 'Loaded fname inside validate response for parsing saml.  fname: ' + fname, false);
+                }
+            }
+        }
+
         // Verify signature
         //if (self.options.cert && !self.validateSignature(xml, self.options.cert)) {
         //    return callback(new Error('Invalid signature'), null, false);
@@ -245,12 +255,25 @@ SAML.prototype.validateResponse = function (samlResponse, callback) {
                 xmlCrypto.xpath(xmlDomDoc, "//*[local-name(.)='Assertion']/*[local-name(.)='AttributeStatement']/*[local-name(.)='Attribute']").forEach(function(item, count){
                     var profileKey = null;
                     for(var key in item.attributes){
-                        if(item.attributes[key].nodeName == 'FriendlyName'){
-                            profileKey = item.attributes[key].nodeValue;
+                        try{
+                            if(item.attributes[key].nodeName == 'FriendlyName'){
+                                profileKey = item.attributes[key].nodeValue;
+                            }
+                            else if(item.attributes[key].nodeName == 'Name' && item.attributes[key].nodeValue == fname){
+                                profileKey = item.attributes[key].nodeValue;
+                            }
+                        }
+                        catch(err){
+                            Accounts.saml.debugLog('saml_utils.js', '267', 'Error inside item.attributes for loop', true);
                         }
                     }
                     if(profileKey) {
-                        profile[profileKey] = item.firstChild.firstChild.nodeValue;
+                        try {
+                            profile[profileKey] = item.firstChild.firstChild.nodeValue;
+                        }
+                        catch(err){
+                            Accounts.saml.debugLog('saml_utils.js', '275', 'Error setting the attribute ' + profileKey + ' on the profile.', true);
+                        }
                     }
                 });
 
@@ -281,7 +304,7 @@ SAML.prototype.validateResponse = function (samlResponse, callback) {
             callback(null, profile, false);
         } else {
             var logoutResponse = self.getElement(xmlDomDoc, 'LogoutResponse');
-            Accounts.saml.debugLog('saml_utils.js', '284', 'Unknown SAML response message', true);
+            Accounts.saml.debugLog('saml_utils.js', '307', 'Unknown SAML response message', true);
 
             if (logoutResponse) {
                 callback(null, null, true);
@@ -292,7 +315,7 @@ SAML.prototype.validateResponse = function (samlResponse, callback) {
         }
     }
     catch(error){
-        Accounts.saml.debugLog('saml_utils.js', '295', 'Unknown SAML response message.. Error: ' + error, true);
+        Accounts.saml.debugLog('saml_utils.js', '318', 'Unknown SAML response message.. Error: ' + error, true);
 
         return callback(new Error('Unknown SAML response message'), null, false);
     }
@@ -316,18 +339,18 @@ SAML.prototype.decryptSAMLResponse = function (samlResponse){
            return null;
        }
         else {
-           Accounts.saml.debugLog('saml_utils.js', '319', 'decryptSAMLResponse: ' + resultObj.result, false);
+           Accounts.saml.debugLog('saml_utils.js', '342', 'decryptSAMLResponse: ' + resultObj.result, false);
            return resultObj.result;
        }
     }
     catch(error){
-        Accounts.saml.debugLog('saml_utils.js', '324', 'error: ' + error, true);
+        Accounts.saml.debugLog('saml_utils.js', '347', 'error: ' + error, true);
         return null;
     }
 }
 
 SAML.prototype.decryptSAML = function(xml, options) {
-    Accounts.saml.debugLog('saml_utils.js', 'decryptSAML', false);
+    Accounts.saml.debugLog('saml_utils.js', '353', 'decryptSAML', false);
 
     if (!options) {
         return {

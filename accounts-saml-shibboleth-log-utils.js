@@ -13,10 +13,6 @@ if (!Accounts.saml) {
 }
 
 Accounts.saml.debugLog = function(file,line,message,isError ){
-    var date = new Date();
-    var n = date.toDateString();
-    var time = date.toLocaleTimeString();
-
     if(bDebug) {
         if(isError) {
 
@@ -25,7 +21,7 @@ Accounts.saml.debugLog = function(file,line,message,isError ){
                 line: line,
                 error: message,
                 info: 'na',
-                date: n + ' ' + time
+                date: new Date(Date.now())
             });
         }
         else{
@@ -35,7 +31,7 @@ Accounts.saml.debugLog = function(file,line,message,isError ){
                 line: line,
                 error: 'na',
                 info: message,
-                date: n + ' ' + time
+                date: new Date(Date.now())
             });
         }
     }
