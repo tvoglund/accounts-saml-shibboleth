@@ -42,17 +42,17 @@ Accounts.registerLoginHandler(function(loginRequest) {
     Accounts.saml.debugLog('saml_server.js', '42', 'fname: ' + fname + ', dbField: ' + dbField + ', First Query is Meteor.user.findOne({ ' + dbField + ' : ' +  profile[fname] + ' })', false);
 
     if(dbField === 'profile.studentID'){
-        user = Meteor.users.findOne({'profile.studentID': new RegExp(profile[fname], i)});
+        user = Meteor.users.findOne({'profile.studentID': profile[fname]});
     }
     else if(dbField === 'emails.address')
     {
-      user = Meteor.users.findOne({'emails.address': new RegExp(loginResult.profile.email, 'i')});
+      user = Meteor.users.findOne({'emails.address': loginResult.profile.email});
     }
     else{
         //this needs thoroughly tested.
         Accounts.saml.debugLog('saml_server.js', '53', 'Using custom query', false);
         var query = {};
-        query[dbField] = new RegExp(profile[fname], 'i');
+        query[dbField] = profile[fname];
         user = Meteor.users.findOne(query);  //This is case sensitive.
     }
 
