@@ -42,11 +42,11 @@ Accounts.registerLoginHandler(function(loginRequest) {
     Accounts.saml.debugLog('saml_server.js', '42', 'fname: ' + fname + ', dbField: ' + dbField + ', First Query is Meteor.user.findOne({ ' + dbField + ' : ' +  profile[fname] + ' })', false);
 
     if(dbField === 'profile.studentID'){
-        user = Meteor.users.findOne({'profile.studentID': profile[fname]});
+        user = Meteor.users.findOne({'profile.studentID': new RegExp(profile[fname], i)});
     }
     else if(dbField === 'emails.address')
     {
-      user = Meteor.users.findOne({'emails.address':loginResult.profile.email});
+      user = Meteor.users.findOne({'emails.address': new RegExp(loginResult.profile.email, 'i')});
     }
     else{
         //this needs thoroughly tested.
