@@ -300,6 +300,10 @@ SAML.prototype.validateResponse = function (samlResponse, callback) {
             if(!profile.email && profile.uid && isTestShib){
                 profile['email'] = profile.uid + '@testshib.org';
             }
+            if(!profile.email && profile['eduPersonPrincipalName']){
+                Accounts.saml.debugLog('saml_utils.js', '305', 'Adding profile.email as eduPersonPrincipalName', false);
+                profile['email'] = profile['eduPersonPrincipalName'];
+            }
 
             callback(null, profile, false);
         } else {

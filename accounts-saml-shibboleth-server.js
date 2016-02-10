@@ -11,7 +11,7 @@ Accounts.registerLoginHandler(function(loginRequest) {
         var myKeys = Object.keys(profile);
         var concatfiles = "";
         for (var k = 0; k < myKeys.length; k++) {
-            concatfiles = concatfiles + ", " + profile[myKeys[k]];
+            concatfiles = concatfiles + ", " + myKeys[k] + ": " + profile[myKeys[k]];
         }
         Accounts.saml.debugLog('saml_server.js', '16', 'Profile Fields: ' + concatfiles, false);
     }
